@@ -4,7 +4,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var app = express();
 
-var PRODUCTS_FILE = path.join(__dirname, 'src/assets/js/components/product-data.json');
+var CRYPTOCURRENCIES_FILE = path.join(__dirname, 'src/assets/js/components/cryptocurrencies-data.json');
 
 app.set('port', (process.env.PORT || 3000));
 
@@ -25,8 +25,8 @@ app.use(function(req, res, next) {
     next();
 });
 
-app.get('/api/products', function(req, res) {
-    fs.readFile(PRODUCTS_FILE, function(err, data) {
+app.get('/api/cryptocurrencies', function(req, res) {
+    fs.readFile(CRYPTOCURRENCIES_FILE, function(err, data) {
         if (err) {
             console.error(err);
             process.exit(1);
@@ -36,9 +36,9 @@ app.get('/api/products', function(req, res) {
 });
 
 
-app.get('/api/product/:id', function(req, res) {
+app.get('/api/cryptocurrency/:id', function(req, res) {
 
-    fs.readFile(PRODUCTS_FILE, function(err, data) {
+    fs.readFile(CRYPTOCURRENCIES_FILE, function(err, data) {
         if (err) {
             console.error(err);
             process.exit(1);
@@ -57,56 +57,60 @@ app.get('/api/product/:id', function(req, res) {
     });
 });
 
-app.post('/api/product/create', function(req, res) {
+app.post('/api/cryptocurrency/create', function(req, res) {
 
-    fs.readFile(PRODUCTS_FILE, function(err, data) {
+    fs.readFile(CRYPTOCURRENCIES_FILE, function(err, data) {
         if (err) {
             console.error(err);
             process.exit(1);
         }
-        var products = JSON.parse(data);
+        var cryptocurrencies = JSON.parse(data);
 
-        var newProduct = {
+        var newCryptocurrency = {
             id: Date.now(),
+            description: req.body.description,
             name: req.body.name,
             price: req.body.price,
+            priceTimestamp: Date()
         };
-        products.push(newProduct);
-        fs.writeFile(PRODUCTS_FILE, JSON.stringify(products, null, 4), function(err) {
+        cryptocurrencies.push(newCryptocurrency);
+        fs.writeFile(CRYPTOCURRENCIES_FILE, JSON.stringify(cryptocurrencies, null, 4), function(err) {
             if (err) {
                 console.error(err);
                 process.exit(1);
             }
-            res.json(products);
+            res.json(cryptocurrencies);
         });
     });
 });
 
-app.patch('/api/product/edit/:id', function(req, res) {
-    fs.readFile(PRODUCTS_FILE, function(err, data) {
+app.patch('/api/cryptocurrency/edit/:id', function(req, res) {
+    fs.readFile(CRYPTOCURRENCIES_FILE, function(err, data) {
         if (err) {
             console.error(err);
             process.exit(1);
         }
-        var products = JSON.parse(data);
+        var cryptocurrencies = JSON.parse(data);
 
-        for(var i = 0; i <= products.length; i++)
+        for(var i = 0; i <= cryptocurrencies.length; i++)
         {
-            if(products[i]['id'] == req.params.id)
+            if(cryptocurrencies[i]['id'] == req.params.id)
             {
-                var product = products[i];
-                product.name = req.body.name;
-                product.price = req.body.price;
+                var cryptocurrency = cryptocurrencies[i];
+                cryptocurrency.description = req.body.description;
+                cryptocurrency.name = req.body.name;
+                cryptocurrency.price = req.body.price;
+                cryptocurrency.priceTimestamp = req.body.priceTimestamp;
 
-                products.splice(i, 1);
-                products.push(product);
+                cryptocurrencies.splice(i, 1);
+                cryptocurrencies.push(cryptocurrency);
 
-                fs.writeFile(PRODUCTS_FILE, JSON.stringify(products, null, 4), function(err) {
+                fs.writeFile(CRYPTOCURRENCIES_FILE, JSON.stringify(cryptocurrencies, null, 4), function(err) {
                     if (err) {
                         console.error(err);
                         process.exit(1);
                     }
-                    res.json(products);
+                    res.json(cryptocurrencies);
                 });
                 break;
             }
@@ -114,26 +118,26 @@ app.patch('/api/product/edit/:id', function(req, res) {
     });
 });
 
-app.delete('/api/product/delete/:id', function(req, res) {
-    fs.readFile(PRODUCTS_FILE, function(err, data) {
+app.delete('/api/cryptocurrency/delete/:id', function(req, res) {
+    fs.readFile(CRYPTOCURRENCIES_FILE, function(err, data) {
         if (err) {
             console.error(err);
             process.exit(1);
         }
-        var products = JSON.parse(data);
+        var cryptocurrencies = JSON.parse(data);
 
-        for(var i = 0; i <= products.length; i++)
+        for(var i = 0; i <= cryptocurrencies.length; i++)
         {
-            if(products[i]['id'] == req.params.id)
+            if(cryptocurrencies[i]['id'] == req.params.id)
             {
-                products.splice(i, 1);
+                cryptocurrencies.splice(i, 1);
 
-                fs.writeFile(PRODUCTS_FILE, JSON.stringify(products, null, 4), function(err) {
+                fs.writeFile(CRYPTOCURRENCIES_FILE, JSON.stringify(cryptocurrencies, null, 4), function(err) {
                     if (err) {
                         console.error(err);
                         process.exit(1);
                     }
-                    res.json(products);
+                    res.json(cryptocurrencies);
                 });
                 break;
             }

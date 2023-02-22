@@ -8,31 +8,31 @@ Vue.use(VueResource);
 
 import App from './App.vue'
 
-const AllProducts = require('./assets/js/components/all-products.vue');
-const CreateProduct = require('./assets/js/components/create-product.vue');
-const EditProduct = require('./assets/js/components/edit-product.vue');
-const DeleteProduct = require('./assets/js/components/delete-product.vue');
+const AllCryptocurrencies = require('./assets/js/components/all-cryptocurrencies.vue');
+const CreateCryptocurrency = require('./assets/js/components/create-cryptocurrency.vue');
+const EditCryptocurrency = require('./assets/js/components/edit-cryptocurrency.vue');
+const DeleteCryptocurrency = require('./assets/js/components/delete-cryptocurrency.vue');
 
 const routes = [
     {
-        name: 'all_products',
+        name: 'all_cryptocurrencies',
         path: '/',
-        component: AllProducts
+        component: AllCryptocurrencies
     },
     {
-        name: 'create_product',
-        path: '/products/create',
-        component: CreateProduct
+        name: 'create_cryptocurrency',
+        path: '/cryptocurrencies/create',
+        component: CreateCryptocurrency
     },
     {
-        name: 'edit_product',
-        path: '/products/edit/:id',
-        component: EditProduct
+        name: 'edit_cryptocurrency',
+        path: '/cryptocurrencies/edit/:id',
+        component: EditCryptocurrency
     },
     {
-        name: 'delete_product',
-        path: '/products/delete/:id',
-        component: DeleteProduct
+        name: 'delete_cryptocurrency',
+        path: '/cryptocurrencies/delete/:id',
+        component: DeleteCryptocurrency
     }
 ];
 var router = new VueRouter({ routes: routes, mode: 'history' });
