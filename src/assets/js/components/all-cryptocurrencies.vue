@@ -2,8 +2,6 @@
     <div id="all-cryptocurrencies">
         <h1>All Cryptocurrencies</h1>
 
-        <p><router-link :to="{ name: 'create_cryptocurrency' }" class="btn btn-primary">Create Cryptocurrency</router-link></p>
-
         <div class="form-group">
             <input type="text" name="search" v-model="cryptocurrencySearch" placeholder="Search cryptocurrencies" class="form-control" v-on:keyup="searchCryptocurrencies">
         </div>
@@ -11,26 +9,24 @@
         <table class="table table-hover">
             <thead>
             <tr>
-                <td>ID</td>
                 <td>Name</td>
                 <td>Price</td>
                 <td>Price timestamp</td>
                 <td>Description</td>
-                <td>Actions</td>
             </tr>
             </thead>
 
             <tbody>
                 <tr v-for="c in cryptocurrencies">
-                    <td>{{ c.id }}</td>
-                    <td>{{ c.name }}</td>
+                    <td>
+                        <router-link :to="{ name: 'cryptocurrency', query: { id: `${c.id}` } }">
+                            <img :src="`/src/assets/img/${c.id}.png`" style="padding-right: 5px; width: 32px; height: 32px">
+                            {{ c.name }}
+                        </router-link>
+                    </td>
                     <td>{{ c.price }}</td>
                     <td>{{ c.priceTimestamp }}</td>
                     <td>{{ c.description }}</td>
-                    <td>
-                        <router-link :to="{name: 'edit_cryptocurrency', params: { id: c.id }}" class="btn btn-primary">Edit</router-link>
-                        <router-link :to="{name: 'delete_cryptocurrency', params: { id: c.id }}" class="btn btn-danger">Delete</router-link>
-                    </td>
                 </tr>
             </tbody>
         </table>
@@ -71,18 +67,11 @@
                     this.cryptocurrencies = this.originalCryptocurrencies;
                     return;
                 }
-
-                var searchedCryptocurrencies = [];
-                for(var i = 0; i < this.originalCryptocurrencies.length; i++)
-                {
-                    var cryptocurrencyName = this.originalCryptocurrencies[i]['name'].toLowerCase();
-                    if(cryptocurrencyName.indexOf(this.cryptocurrencySearch.toLowerCase()) >= 0)
-                    {
-                        searchedCryptocurrencies.push(this.originalCryptocurrencies[i]);
-                    }
-                }
-
-                this.cryptocurrencies = searchedCryptocurrencies;
+                let url = new URL("http://localhost:3000/api/cryptocurrency/search");
+                url.searchParams.append('name', this.cryptocurrencySearch);
+                this.$http.get(url.toString()).then((response) => {
+                    this.cryptocurrencies = response.body;
+                });
             }
         }
     }

@@ -35,6 +35,23 @@ app.get('/api/cryptocurrencies', function(req, res) {
     });
 });
 
+app.get('/api/cryptocurrency/search', function(req, res) {
+    const name = req.query.name;
+
+    fs.readFile(CRYPTOCURRENCIES_FILE, function(err, data) {
+        if (err) {
+            console.error(err);
+            process.exit(1);
+        }
+        var jsonArray = JSON.parse(data);
+
+        var searchResults = jsonArray.filter(
+            (jsonObj) => { return jsonObj.name.toLowerCase().includes(name.toLowerCase()) }
+        )
+
+        res.json(searchResults);
+    })
+})
 
 app.get('/api/cryptocurrency/:id', function(req, res) {
 
