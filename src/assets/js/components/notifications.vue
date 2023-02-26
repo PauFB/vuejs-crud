@@ -7,20 +7,17 @@
 </template>
 
 <script>
-    export default{
-        data(){
-            return{
+export default {
+    data() {
+        return {}
+    },
 
-            }
-        },
+    methods: {
+        getNotificationClass: function (notification) {
+            return 'alert alert-' + notification.type;
+        }
+    },
 
-        methods: {
-            getNotificationClass: function(notification)
-            {
-                return 'alert alert-' + notification.type;
-            }
-        },
-
-        props: ['notifications']
-    }
+    props: ['notifications']
+}
 </script>
