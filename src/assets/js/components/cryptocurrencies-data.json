@@ -1,1 +1,44 @@
-[{"id":1,"description":"Generic description...","name":"Bitcoin","price":14946.5807,"priceTimestamp":"Wed Feb 20 2023 20:30:16 GMT+0100 (GMT+01:00)"},{"id":2,"description":"Generic description...","name":"GMX","price":10.9674,"priceTimestamp":"Wed Feb 25 2023 12:00:00 GMT+0100 (GMT+01:00)"},{"id":3,"description":"Generic description...","name":"Ethereum","price":958.066,"priceTimestamp":"Wed Feb 30 2023 12:00:00 GMT+0100 (GMT+01:00)"},{"id":4,"description":"Generic description...","name":"BNB","price":3.7829,"priceTimestamp":"Wed Feb 30 2023 12:00:00 GMT+0100 (GMT+01:00)"},{"id":5,"description":"Generic description...","name":"Gemini Dollar","price":9.6677,"priceTimestamp":"Wed Feb 30 2023 12:00:00 GMT+0100 (GMT+01:00)"},{"id":6,"description":"Generic description...","name":"Bitcoin SV","price":38.6712,"priceTimestamp":"Wed Feb 30 2023 12:00:00 GMT+0100 (GMT+01:00)"}]
+[
+    {
+        "id": 1,
+        "description": "Generic description...",
+        "name": "Bitcoin",
+        "price": 15000,
+        "priceTimestamp": "Wed Feb 20 2023 20:30:16 GMT+0100 (GMT+01:00)"
+    },
+    {
+        "id": 2,
+        "description": "Generic description...",
+        "name": "GMX",
+        "price": 10,
+        "priceTimestamp": "Wed Feb 25 2023 12:00:00 GMT+0100 (GMT+01:00)"
+    },
+    {
+        "id": 3,
+        "description": "Generic description...",
+        "name": "Ethereum",
+        "price": 950,
+        "priceTimestamp": "Wed Feb 30 2023 12:00:00 GMT+0100 (GMT+01:00)"
+    },
+    {
+        "id": 4,
+        "description": "Generic description...",
+        "name": "BNB",
+        "price": 3,
+        "priceTimestamp": "Wed Feb 30 2023 12:00:00 GMT+0100 (GMT+01:00)"
+    },
+    {
+        "id": 5,
+        "description": "Generic description...",
+        "name": "Gemini Dollar",
+        "price": 10,
+        "priceTimestamp": "Wed Feb 30 2023 12:00:00 GMT+0100 (GMT+01:00)"
+    },
+    {
+        "id": 6,
+        "description": "Generic description...",
+        "name": "Bitcoin SV",
+        "price": 40,
+        "priceTimestamp": "Wed Feb 30 2023 12:00:00 GMT+0100 (GMT+01:00)"
+    }
+]

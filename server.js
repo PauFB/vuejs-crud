@@ -72,23 +72,18 @@ app.get('/api/cryptocurrency/:id', function (req, res) {
     });
 });
 
-app.post('/api/cryptocurrencies/filterCryptos', function (req, res) {
+app.post('/api/cryptocurrency/fetch', function (req, res) {
     fs.readFile(CRYPTOCURRENCIES_FILE, function (err, data) {
         if (err) {
             console.error(err);
             console.exit(1);
         }
-
-
         var jsonData = JSON.parse(data);
-        var jsonReq = req.body;
-
-        let resultFilter = jsonData.filter(item => {
-            return jsonReq.some((elem) => {
-                return item.id === elem.id;
-            })
-        })
-        res.json(resultFilter);
+        var idsArray = req.body;
+        let result = jsonData.filter(item => {
+            return idsArray.includes(item.id);
+        });
+        res.json(result);
     })
 })
 

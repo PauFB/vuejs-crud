@@ -18,7 +18,7 @@
             </thead>
 
             <tbody>
-                <tr v-for="c in cryptocurrencies">
+                <tr v-for="c in displayedCryptocurrencies">
                     <td>
                         <router-link :to="{ name: 'cryptocurrency', query: { id: `${c.id}` } }">
                             <img :src="`/src/assets/img/${c.id}.png`" style="padding-right: 5px; width: 32px; height: 32px">
@@ -31,7 +31,6 @@
                 </tr>
             </tbody>
         </table>
-        {{ test }}
     </div>
 </template>
 
@@ -39,38 +38,43 @@
 export default {
     data() {
         return {
-            cryptocurrencies: [],
+            displayedCryptocurrencies: [],
             originalCryptocurrencies: [],
-            cryptocurrencySearch: '',
-            test: ''
+            cryptocurrencySearch: ''
         }
     },
 
     created: function () {
-        this.fetchCryptocurrenciesData();
-        window.setInterval(this.searchCryptocurrencies, 5000);
+        this.fetchAllCryptocurrenciesData();
+        window.setInterval(this.fetchDisplayedCryptocurrenciesData, 5000);
     },
 
     methods: {
-        fetchCryptocurrenciesData: function () {
-            this.$http.get('http://localhost:3000/api/cryptocurrencies').then((response) => {
-                this.cryptocurrencies = response.body;
-                this.originalCryptocurrencies = this.cryptocurrencies;
+        fetchAllCryptocurrenciesData: function () {
+            this.$http.get('http://localhost:3000/api/cryptocurrencies').then(response => {
+                this.originalCryptocurrencies = response.body;
+                this.displayedCryptocurrencies = response.body;
+            });
+        },
+
+        fetchDisplayedCryptocurrenciesData: function () {
+            const idsArray = this.displayedCryptocurrencies.map(item => {
+                return item.id;
+            });
+            this.$http.post('http://localhost:3000/api/cryptocurrency/fetch', idsArray).then(response => {
+                this.displayedCryptocurrencies = response.body;
             });
         },
 
         searchCryptocurrencies: function () {
             if (this.cryptocurrencySearch == '') {
-                this.fetchCryptocurrenciesData();
+                this.fetchAllCryptocurrenciesData();
             }
-            else{
-                const regex = new RegExp(`^${this.cryptocurrencySearch}`); 
-                let idsTosearch = this.cryptocurrencies
-                .filter(item => regex.test(item.name));
-
-                this.$http.post('http://localhost:3000/api/cryptocurrencies/filterCryptos', JSON.stringify(idsTosearch))
-                .then((response) => {
-                    this.cryptocurrencies = response.body;
+            else {
+                let url = new URL("http://localhost:3000/api/cryptocurrency/search");
+                url.searchParams.append('name', this.cryptocurrencySearch);
+                this.$http.get(url.toString()).then(response => {
+                    this.displayedCryptocurrencies = response.body;
                 });
             }
         }

@@ -22,7 +22,7 @@ export default {
 
     methods: {
         fetchCryptocurrencyDetails: function () {
-            this.$http.get(`http://localhost:3000/api/cryptocurrency/${this.$route.query.id}`).then((response) => {
+            this.$http.get(`http://localhost:3000/api/cryptocurrency/${this.$route.query.id}`).then(response => {
                 this.cryptocurrency = response.body;
                 console.log(this.cryptocurrency);
             });
