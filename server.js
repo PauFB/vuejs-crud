@@ -63,7 +63,7 @@ app.get('/api/cryptocurrency/:id', function (req, res) {
 
         var json = JSON.parse(data);
 
-        for (var i = 0; i <= json.length; i++) {
+        for (var i = 0; i < json.length; i++) {
             if (json[i]['id'] == req.params.id) {
                 res.json(json[i]);
                 break;
@@ -71,6 +71,26 @@ app.get('/api/cryptocurrency/:id', function (req, res) {
         }
     });
 });
+
+app.post('/api/cryptocurrencies/filterCryptos', function (req, res) {
+    fs.readFile(CRYPTOCURRENCIES_FILE, function (err, data) {
+        if (err) {
+            console.error(err);
+            console.exit(1);
+        }
+
+
+        var jsonData = JSON.parse(data);
+        var jsonReq = req.body;
+
+        let resultFilter = jsonData.filter(item => {
+            return jsonReq.some((elem) => {
+                return item.id === elem.id;
+            })
+        })
+        res.json(resultFilter);
+    })
+})
 
 app.post('/api/cryptocurrency/create', function (req, res) {
 

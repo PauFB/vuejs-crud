@@ -31,6 +31,7 @@
                 </tr>
             </tbody>
         </table>
+        {{ test }}
     </div>
 </template>
 
@@ -40,13 +41,14 @@ export default {
         return {
             cryptocurrencies: [],
             originalCryptocurrencies: [],
-            cryptocurrencySearch: ''
+            cryptocurrencySearch: '',
+            test: ''
         }
     },
 
     created: function () {
         this.fetchCryptocurrenciesData();
-        window.setInterval(this.fetchCryptocurrenciesData, 5000);
+        window.setInterval(this.searchCryptocurrencies, 5000);
     },
 
     methods: {
@@ -59,14 +61,18 @@ export default {
 
         searchCryptocurrencies: function () {
             if (this.cryptocurrencySearch == '') {
-                this.cryptocurrencies = this.originalCryptocurrencies;
-                return;
+                this.fetchCryptocurrenciesData();
             }
-            let url = new URL("http://localhost:3000/api/cryptocurrency/search");
-            url.searchParams.append('name', this.cryptocurrencySearch);
-            this.$http.get(url.toString()).then((response) => {
-                this.cryptocurrencies = response.body;
-            });
+            else{
+                const regex = new RegExp(`^${this.cryptocurrencySearch}`); 
+                let idsTosearch = this.cryptocurrencies
+                .filter(item => regex.test(item.name));
+
+                this.$http.post('http://localhost:3000/api/cryptocurrencies/filterCryptos', JSON.stringify(idsTosearch))
+                .then((response) => {
+                    this.cryptocurrencies = response.body;
+                });
+            }
         }
     }
 }
