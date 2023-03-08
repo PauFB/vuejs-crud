@@ -39,7 +39,6 @@ export default {
     data() {
         return {
             displayedCryptocurrencies: [],
-            originalCryptocurrencies: [],
             cryptocurrencySearch: ''
         }
     },
@@ -52,7 +51,6 @@ export default {
     methods: {
         fetchAllCryptocurrenciesData: function () {
             this.$http.get('http://localhost:3000/api/cryptocurrencies').then(response => {
-                this.originalCryptocurrencies = response.body;
                 this.displayedCryptocurrencies = response.body;
             });
         },
