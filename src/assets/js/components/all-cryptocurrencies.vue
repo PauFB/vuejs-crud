@@ -4,7 +4,7 @@
 
         <button type="button" class="btn" @click="openCartModal">Cart</button>
 
-        <CartModal v-if="isCartModalVisible" @close="closeCartModal" :displayed-cryptocurrencies="purchaseList" />
+        <CartModal v-if="isCartModalVisible" @close="closeCartModal" :cart-cryptocurrencies="cartCryptocurrencies" />
 
         <div class="form-group">
             <input type="text" name="search" v-model="cryptocurrencySearch" placeholder="Search cryptocurrencies"
@@ -33,9 +33,12 @@
                     <td>{{ c.priceTimestamp }}</td>
                     <td>{{ c.description }}</td>
 
-                    <input v-model="qty[c.id]" class="form-control input-qty" type="number" min="1" style="width: 70px;">
-
-                    <button v-on:click="addToCart(c)" class="btn btn-sm btn-primary">Add</button>
+                    <div class="input-group">
+                        <input v-model="qty[c.id]" class="form-control" type="number" min="0" style="width: 100px;">
+                        <span class="input-group-btn">
+                            <button @click="addToCart(c)" class="btn btn-primary">Add to cart</button>
+                        </span>
+                    </div>
                 </tr>
             </tbody>
         </table>
@@ -54,7 +57,7 @@ export default {
             displayedCryptocurrencies: [],
             cryptocurrencySearch: '',
             isCartModalVisible: false,
-            purchaseList: [],
+            cartCryptocurrencies: [],
             qty: [],
             test: ''
         }
@@ -75,18 +78,18 @@ export default {
         },
 
         addToCart: function (crypto) {
-            let ocurrency = this.purchaseList.filter(item => item.id === crypto.id);
-            if (ocurrency.length > 0) {
-                ocurrency[0].qty += parseFloat(this.qty[crypto.id])
-            }   
+            let cryptoAlreadyInCart = this.cartCryptocurrencies.filter(item => item.id === crypto.id);
+            if (cryptoAlreadyInCart.length > 0) {
+                cryptoAlreadyInCart[0].qty += parseFloat(this.qty[crypto.id])
+            }
             else {
                 let purchaseCrypto = {
                     id: crypto.id,
-                    qty: parseFloat(this.qty[crypto.id]),
                     name: crypto.name,
-                    price: crypto.price
+                    price: crypto.price,
+                    qty: parseFloat(this.qty[crypto.id])
                 }
-                this.purchaseList.push(purchaseCrypto)
+                this.cartCryptocurrencies.push(purchaseCrypto)
             }
         },
 
@@ -120,3 +123,10 @@ export default {
     }
 }
 </script>
+
+<style>
+.input-group-btn {
+    display: block;
+    width: 100%;
+}
+</style>
