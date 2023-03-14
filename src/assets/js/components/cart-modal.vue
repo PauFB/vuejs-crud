@@ -13,6 +13,9 @@ export default {
         close() {
             this.$emit('close');
         },
+        removeItem(index){
+            this.displayedCryptocurrencies.splice(index, 1)
+        },
     },
 };
 </script>
@@ -29,7 +32,7 @@ export default {
                 </div>
                 <div class="modal-body">
                     <table class="table table-cart">
-                        <tr v-for="c in displayedCryptocurrencies">
+                        <tr v-for="(c, index) in displayedCryptocurrencies" :key="c.id">
                             <td>{{ c.name }}</td>
                             <td style="width:120px; height: 30px;">QTY:
                                 <input v-model="c.qty" class="form-control input-qty" type="number" min="1">
