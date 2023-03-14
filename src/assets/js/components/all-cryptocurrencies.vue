@@ -34,14 +34,11 @@
                     <td>{{ c.description }}</td>
 
                     <input v-model="qty[c.id]" class="form-control input-qty" type="number" min="1" style="width: 70px;">
-                    <!-- <button class="btn btn-sm btn-primary">Add to Cart</button> -->
 
                     <button v-on:click="addToCart(c)" class="btn btn-sm btn-primary">Add</button>
                 </tr>
             </tbody>
         </table>
-        {{ purchaseList }}
-        {{ test }}
     </div>
 </template>
 
