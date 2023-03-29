@@ -83,6 +83,7 @@ app.post('/api/cryptocurrency/fetch', function (req, res) {
         let result = jsonData.filter(item => {
             return idsArray.includes(item.id);
         });
+        result.sort((a, b) => idsArray.indexOf(a.id) - idsArray.indexOf(b.id));
         res.json(result);
     })
 })

@@ -1,35 +1,52 @@
 <template>
-    <div class="modal fade in modal-active">
+    <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" @click="$emit('close')" class="close"><span>&times;</span></button>
-                    <h4 class="modal-title">
-                        Cryptocurrencies cart
-                    </h4>
+                    <h5 class="modal-title" id="cartModalLabel">Cart</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <table class="table table-cart">
-                        <tr v-for="(c, index) in cartCryptocurrencies" :key="c.id">
-                            <td>{{ c.name }}</td>
-                            <td style="width:120px; height: 30px;">QTY:
-                                <input v-model="c.qty" class="form-control" type="number" min="0">
-                            </td>
-                            <td class="text-right">{{ c.price }}</td>
-                            <td>
-                                <button @click="removeItem(index)"><span class="glyphicon glyphicon-trash"></span></button>
-                            </td>
-                        </tr>
-                        <tr v-show="cartCryptocurrencies.length === 0">
-                            <td colspan="4" class="text-center">Cart is empty</td>
-                        </tr>
-                    </table>
+                    <div v-if="cartCryptocurrencies.length === 0">
+                        <p class="text-center">Cart is empty</p>
+                    </div>
+                    <div v-if="cartCryptocurrencies.length > 0">
+                        <table class="table table-cart">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Quantity</td>
+                                    <td>Price per unit</td>
+                                    <td></td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(c, index) in cartCryptocurrencies" :key="c.id" style="vertical-align: middle;">
+                                    <td>{{ c.name }}</td>
+                                    <td style="width:120px; height: 30px;">
+                                        <input v-model="c.qty" class="form-control" type="number" min="0">
+                                    </td>
+                                    <td class="text-right">{{ c.price }}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-danger" @click="removeItem(index)">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                                                <path fill-rule="evenodd"
+                                                    d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+                                            </svg>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                     <div class="modal-footer" v-show="cartCryptocurrencies.length > 0">
                         <p class="text-right">Cart Total: {{ totalAmountToPay }}</p>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" @click="$emit('close')">Close</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
                 </div>
             </div>
         </div>
@@ -39,6 +56,7 @@
 <script>
 export default {
     props: ['cartCryptocurrencies'],
+
     computed: {
         totalAmountToPay() {
             let total = 0;
@@ -46,19 +64,11 @@ export default {
             return total;
         }
     },
+
     methods: {
-        close() {
-            this.$emit('close');
-        },
         removeItem(index) {
             this.cartCryptocurrencies.splice(index, 1)
         },
     },
 };
 </script>
-
-<style>
-.modal-active {
-    display: block;
-}
-</style>

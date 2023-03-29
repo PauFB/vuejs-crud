@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="container" style="max-width: 80%;">
         <div id="page">
             <transition name="fade">
                 <router-view></router-view>
@@ -9,21 +9,23 @@
 </template>
 
 <style>
-    .fade-enter-active, .fade-leave-active {
-      transition: opacity .5s
-    }
-    .fade-enter, .fade-leave-active {
-      opacity: 0
-    }
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity .5s
+}
+
+.fade-enter,
+.fade-leave-active {
+    opacity: 0
+}
 </style>
 
 <script>
+export default {
+    data() {
+        return {
 
-    export default{
-        data(){
-            return{
-
-            }
         }
     }
+}
 </script>

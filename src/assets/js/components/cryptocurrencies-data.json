@@ -1,42 +1,42 @@
 [
     {
         "id": 1,
-        "description": "Generic description...",
+        "description": "Bitcoin is a protocol which implements a highly available, public, permanent, and decentralized ledger. In order to add to the ledger, a user must prove they control an entry in the ledger.",
         "name": "Bitcoin",
         "price": 15000,
         "priceTimestamp": "Wed Feb 20 2023 20:30:16 GMT+0100 (GMT+01:00)"
     },
     {
         "id": 2,
-        "description": "Generic description...",
+        "description": "GMX is a decentralized, permissionless perpetual swap and spot exchange. Traders can use it to easily trade cryptocurrency on-chain just by connecting their wallets. GMX has a native token called GMX, which functions as a governance, utility, and value-accrual token for the GMX protocol. Users can stake GMX tokens and earn a portion of GMX’s protocol fees, plus benefit from other incentives. GMX currently supports the Arbitrum and Avalanche networks.",
         "name": "GMX",
         "price": 10,
         "priceTimestamp": "Wed Feb 25 2023 12:00:00 GMT+0100 (GMT+01:00)"
     },
     {
         "id": 3,
-        "description": "Generic description...",
+        "description": "Ethereum is a decentralized computing platform. You can think of it like a laptop or PC, but it doesn't run on a single device. Instead, it simultaneously runs on thousands of machines around the world, meaning that it has no owner.",
         "name": "Ethereum",
         "price": 950,
         "priceTimestamp": "Wed Feb 30 2023 12:00:00 GMT+0100 (GMT+01:00)"
     },
     {
         "id": 4,
-        "description": "Generic description...",
+        "description": "GBNB is the cryptocurrency coin that powers the BNB Chain ecosystem. As one of the world's most popular utility tokens, not only can you trade BNB like any other cryptocurrency, you can also use BNB in a wide range of applications and use cases.",
         "name": "BNB",
         "price": 3,
         "priceTimestamp": "Wed Feb 30 2023 12:00:00 GMT+0100 (GMT+01:00)"
     },
     {
         "id": 5,
-        "description": "Generic description...",
+        "description": "Gemini dollar (GUSD) is a U.S. dollar-backed stablecoin —a digital representation of cash that can be used to interact with the crypto economy. GUSD combines the creditworthiness and price stability of the U.S. dollar with the speed and efficiency of cryptocurrency.",
         "name": "Gemini Dollar",
         "price": 10,
         "priceTimestamp": "Wed Feb 30 2023 12:00:00 GMT+0100 (GMT+01:00)"
     },
     {
         "id": 6,
-        "description": "Generic description...",
+        "description": "Bitcoin SV (BSV) is a full-node implementation and a fork of Bitcoin Cash (BCH). It attempts to restore the original Bitcoin protocol as set out by Satoshi Nakamoto in version 0.1 of Bitcoin, keeping it both stable and able to massively scale.",
         "name": "Bitcoin SV",
         "price": 40,
         "priceTimestamp": "Wed Feb 30 2023 12:00:00 GMT+0100 (GMT+01:00)"
