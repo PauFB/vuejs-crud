@@ -1,5 +1,5 @@
 <template>
-    <div class="container" style="max-width: 80%;">
+    <div class="container-fluid">
         <div id="page">
             <transition name="fade">
                 <router-view></router-view>
