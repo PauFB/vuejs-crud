@@ -114,6 +114,12 @@ export default {
         window.setInterval(this.fetchDisplayedCryptocurrenciesData, 5000);
     },
 
+    mounted() {
+        this.$root.$on('eraseCartCryptocurrencies', () => {
+            this.cartCryptocurrencies = [];
+        });
+    },
+
     computed: {
         gridRows() {
             const result = [];

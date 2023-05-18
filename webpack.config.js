@@ -35,6 +35,14 @@ module.exports = {
             }
         ]
     },
+    plugins: [
+        new webpack.DefinePlugin({
+            'process.env': {
+                VUE_APP_CLIENT_ID: JSON.stringify(""),
+                VUE_APP_CLIENT_SECRET: JSON.stringify("")
+            },
+        })
+    ],
     resolve: {
         alias: {
             'vue$': 'vue/dist/vue'

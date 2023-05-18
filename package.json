@@ -1,7 +1,5 @@
 {
   "name": "vuejs-crud-application",
-  "description": "A demo application to show how to build a crud application with VueJS",
-  "author": "Paulund",
   "private": true,
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --open --inline --hot",
@@ -9,10 +7,12 @@
   },
   "dependencies": {
     "@popperjs/core": "^2.11.7",
+    "axios": "^1.3.6",
     "body-parser": "^1.4.3",
     "bootstrap": "^5.2.3",
     "bootstrap-vue": "^2.23.1",
     "express": "^4.4.5",
+    "paypal-rest-sdk": "^1.8.1",
     "vue": "^2.0.1",
     "vue-grid-layout": "2.3.7",
     "vue-style-loader": "^4.1.3"

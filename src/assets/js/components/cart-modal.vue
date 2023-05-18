@@ -1,5 +1,5 @@
 <template>
-    <b-modal id="cartModal" title="Cart">
+    <b-modal id="cartModal" title="Cart" @shown="onModalShown()">
         <div v-if="cartCryptocurrencies.length === 0">
             <p class="text-center">Cart is empty</p>
         </div>
@@ -19,7 +19,7 @@
                         <td style="width:120px; height: 30px;">
                             <input v-model="c.qty" class="form-control" type="number" min="0">
                         </td>
-                        <td>{{ c.price }}</td>
+                        <td>{{ c.price | toCurrency }}</td>
                         <td>
                             <button type="button" class="btn btn-danger" @click="removeItem(index)">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
@@ -31,24 +31,127 @@
                     </tr>
                 </tbody>
             </table>
-            <p class="text-end">Cart total: {{ totalAmountToPay }}</p>
+            <b-row align-h="center" align-v="center">
+                <b-col class="text-center">
+                    <div id="paypal-button-container"></div>
+                </b-col>
+                <b-col class="text-center">
+                    Cart total: {{ totalAmountToPay | toCurrency }}
+                </b-col>
+            </b-row>
+        </div>
+        <div v-if="purchaseSuccessfulBody" class="alert alert-success" role="alert">
+            <h5 class="alert-heading text-center">Purchase summary</h5>
+            <table class="table table-cart">
+                <thead>
+                    <td>Name</td>
+                    <td>Quantity</td>
+                    <td>Price per unit</td>
+                </thead>
+                <tbody>
+                    <tr v-for="c in purchaseSuccessfulBody">
+                        <td>{{ c.name }}</td>
+                        <td>{{ c.price | toCurrency }}</td>
+                        <td>{{ c.qty }}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </b-modal>
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
     props: ['cartCryptocurrencies'],
+
+    data() {
+        return {
+            purchaseSuccessfulBody: null
+        }
+    },
+
+    filters: {
+        toCurrency(value) {
+            if (typeof value !== "number") {
+                return value;
+            }
+            var formatter = new Intl.NumberFormat('ca-ES', {
+                style: 'currency',
+                currency: 'EUR'
+            });
+            return formatter.format(value);
+        }
+    },
 
     computed: {
         totalAmountToPay() {
             let total = 0;
-            this.cartCryptocurrencies.forEach(element => total += element.price * element.qty);
-            return total;
+            this.cartCryptocurrencies.forEach(c => total += c.price * c.qty);
+            var formatter = new Intl.NumberFormat('en-US', {
+                style: 'decimal',
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+                useGrouping: false
+            });
+            return parseFloat(formatter.format(total));
         }
     },
 
+    mounted() {
+        this.$root.$on('bv::modal::hidden', (bvEvent, modalId) => {
+            this.purchaseSuccessfulBody = null;
+        });
+        this.$root.$on('eraseCartCryptocurrencies', () => {
+            this.cartCryptocurrencies = [];
+        });
+    },
+
     methods: {
+        requestPaymentExecution(body) {
+            return new Promise((resolve, reject) => {
+                axios
+                    .post('http://localhost:3000/api/process-payment', body)
+                    .then(res => {
+                        this.purchaseSuccessfulBody = res.data;
+                        this.$root.$emit('eraseCartCryptocurrencies');
+                        return resolve()
+                    })
+                    .catch(err => {
+                        return reject(err)
+                    });
+            })
+        },
+        onModalShown() {
+            const totalAmountToPay = this.totalAmountToPay;
+            let payment = (data, actions) => {
+                return actions.payment.create({
+                    payment: {
+                        transactions: [
+                            {
+                                amount: {
+                                    total: totalAmountToPay,
+                                    currency: 'EUR'
+                                }
+                            }
+                        ]
+                    }
+                });
+            }
+            let onAuthorize = (data) => {
+                this.requestPaymentExecution({data: data, cartCryptocurrencies: this.cartCryptocurrencies});
+            }
+            paypal.Button.render({
+                env: 'sandbox',
+                client: {
+                    sandbox: process.env.VUE_APP_CLIENT_ID
+                },
+                commit: true,
+                payment,
+                onAuthorize
+            }, '#paypal-button-container');
+        },
         removeItem(index) {
             this.cartCryptocurrencies.splice(index, 1)
         }

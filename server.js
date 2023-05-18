@@ -2,6 +2,7 @@ var fs = require('fs');
 var path = require('path');
 var express = require('express');
 var bodyParser = require('body-parser');
+var paypal = require('paypal-rest-sdk');
 var app = express();
 
 var CRYPTOCURRENCIES_FILE = path.join(__dirname, 'src/assets/js/components/cryptocurrencies-data.json');
@@ -23,6 +24,25 @@ app.use(function (req, res, next) {
     // Disable caching so we'll always get the latest comments.
     res.setHeader('Cache-Control', 'no-cache');
     next();
+});
+
+paypal.configure({
+    mode: 'sandbox',
+    client_id: process.env.VUE_APP_CLIENT_ID,
+    client_secret: process.env.VUE_APP_CLIENT_SECRET
+});
+
+app.post('/api/process-payment', function (req, res) {
+    const data = req.body.data;
+    const cartCryptocurrencies = req.body.cartCryptocurrencies;
+    paypal.payment.execute(data.paymentID, { payer_id: data.payerID }, (error, paymentLog) => {
+        if (error) {
+            res.status(400).json(JSON.stringify(error));
+        }
+        else {
+            res.status(200).json(cartCryptocurrencies);
+        }
+    });
 });
 
 app.get('/api/cryptocurrencies', function (req, res) {
@@ -171,7 +191,6 @@ app.delete('/api/cryptocurrency/delete/:id', function (req, res) {
         }
     });
 });
-
 
 app.listen(app.get('port'), function () {
     console.log('Server started: http://localhost:' + app.get('port') + '/');
