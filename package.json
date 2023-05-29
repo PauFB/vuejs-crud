@@ -11,6 +11,7 @@
     "body-parser": "^1.4.3",
     "bootstrap": "^5.2.3",
     "bootstrap-vue": "^2.23.1",
+    "chart.js": "^2.9.4",
     "express": "^4.4.5",
     "paypal-rest-sdk": "^1.8.1",
     "vue": "^2.0.1",

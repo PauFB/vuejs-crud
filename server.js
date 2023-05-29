@@ -5,7 +5,7 @@ var bodyParser = require('body-parser');
 var paypal = require('paypal-rest-sdk');
 var app = express();
 
-var CRYPTOCURRENCIES_FILE = path.join(__dirname, 'src/assets/js/components/cryptocurrencies-data.json');
+var CRYPTOCURRENCIES_FILE = path.join(__dirname, 'cryptocurrencies-data.json');
 
 app.set('port', (process.env.PORT || 3000));
 
@@ -106,6 +106,31 @@ app.post('/api/cryptocurrency/fetch', function (req, res) {
         result.sort((a, b) => idsArray.indexOf(a.id) - idsArray.indexOf(b.id));
         res.json(result);
     })
+})
+
+app.post('/api/cryptocurrency/fetch-history', async function (req, res) {
+    var idStringArray = req.body;
+
+    const tempDate = new Date();
+    tempDate.setDate(tempDate.getDate());
+    const toTime = Math.floor(tempDate.getTime() / 1000);
+
+    tempDate.setDate(tempDate.getDate() - 1);
+    const fromTime = Math.floor(tempDate.getTime() / 1000);
+
+    const result = await Promise.all(
+        idStringArray.map(async item => {
+            const url = `https://api.coingecko.com/api/v3/coins/${item.idString}/market_chart/range?vs_currency=eur&from=${fromTime}&to=${toTime}`;
+            const response = await fetch(url);
+            const data = await response.json();
+            return {
+                idString: item.idString,
+                prices: data.prices,
+            };
+        })
+    );
+
+    res.json(result);
 })
 
 app.post('/api/cryptocurrency/create', function (req, res) {

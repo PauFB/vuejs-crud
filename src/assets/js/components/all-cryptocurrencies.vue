@@ -46,12 +46,23 @@
                     <br>
                     <span class="crypto-description">{{ cryptocurrency.description }}</span>
                     <hr>
-                    {{ cryptocurrency.price }}
-                    <div class="input-group w-50" style="float: right">
-                        <input v-model="qty[cryptocurrency.id]" class="form-control" type="number" min="0"
-                            style="width: 100px" />
-                        <button @click="addToCart(cryptocurrency)" class="btn btn-primary">Add to cart</button>
-                    </div>
+                    <canvas :id="cryptocurrency.idString"></canvas>
+                    <b-row align-v="center" style="margin: 10px 0px 10px 0px">
+                        <div class="w-25">
+                            <b-col class="d-flex justify-content-center">
+                                Price: {{ cryptocurrency.price | toCurrency }}
+                            </b-col>
+                        </div>
+                        <div class="w-75">
+                            <b-col>
+                                <div class="input-group">
+                                    <input v-model="qty[cryptocurrency.id]" class="form-control" type="number" min="0"
+                                        style="width: 100px" />
+                                    <button @click="addToCart(cryptocurrency)" class="btn btn-primary">Add to cart</button>
+                                </div>
+                            </b-col>
+                        </div>
+                    </b-row>
                 </b-col>
             </b-row>
         </div>
@@ -91,6 +102,7 @@
 </template>
 
 <script>
+import Chart from "chart.js";
 import CartModal from "./cart-modal.vue";
 
 export default {
@@ -105,8 +117,22 @@ export default {
             displayedCryptocurrencies: [],
             cryptocurrencySearchQuery: "",
             cartCryptocurrencies: [],
-            qty: []
+            qty: [],
+            priceHistory: []
         };
+    },
+
+    filters: {
+        toCurrency(value) {
+            if (typeof value !== "number") {
+                return value;
+            }
+            var formatter = new Intl.NumberFormat('ca-ES', {
+                style: 'currency',
+                currency: 'EUR'
+            });
+            return formatter.format(value);
+        }
     },
 
     created() {
@@ -144,11 +170,23 @@ export default {
                 });
             }
         },
-        fetchAllCryptocurrenciesData() {
-            this.$http
+        async fetchAllCryptocurrenciesData() {
+            await this.$http
                 .get("http://localhost:3000/api/cryptocurrencies")
                 .then(response => {
                     this.displayedCryptocurrencies = response.body;
+                });
+            let idStringArray = [];
+            this.displayedCryptocurrencies.forEach(c => {
+                idStringArray.push({
+                    idString: c.idString
+                });
+            });
+            this.$http
+                .post("http://localhost:3000/api/cryptocurrency/fetch-history", idStringArray)
+                .then(response => {
+                    this.priceHistory = response.body;
+                    this.generateGraphs();
                 });
         },
         fetchDisplayedCryptocurrenciesData() {
@@ -170,6 +208,45 @@ export default {
                 });
             }
         },
+        generateGraphs() {
+            this.displayedCryptocurrencies.forEach(c => {
+                const ctx = document.getElementById(c.idString);
+
+                const labels = [], data = [];
+                const cHistory = this.priceHistory.find(item => item.idString === c.idString);
+                if (cHistory.prices && cHistory.prices.length > 0) {
+                    cHistory.prices.forEach(pair => {
+                        labels.push(pair[0]);
+                        data.push(pair[1]);
+                    });
+                }
+
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            data: data,
+                            borderColor: '#FF0000',
+                            borderWidth: 3,
+                            fill: false,
+                            pointRadius: 0,
+                            tension: 0
+                        }]
+                    },
+                    options: {
+                        legend: {
+                            display: false
+                        },
+                        scales: {
+                            xAxes: [{
+                                display: false
+                            }]
+                        }
+                    }
+                });
+            });
+        }
     },
 };
 </script>
