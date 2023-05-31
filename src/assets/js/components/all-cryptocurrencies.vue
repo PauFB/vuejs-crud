@@ -1,6 +1,6 @@
 <template>
     <div id="all-cryptocurrencies">
-        <h1>All Cryptocurrencies</h1>
+        <h1>{{ $t('All_cryptocurrencies') }}</h1>
 
         <div class="sticky-top">
             <div style="margin: 10px 0px 10px 0px">
@@ -10,25 +10,25 @@
                     </div>
                     <div class="col-md-auto">
                         <div class="input-group w-auto">
-                            <span class="input-group-text">Style</span>
+                            <span class="input-group-text">{{ $t('Style') }}</span>
                             <select class="form-select" v-model="selectedStyle">
-                                <option value="grid">Grid</option>
-                                <option value="table">Table</option>
+                                <option value="grid">{{ $t('Grid') }}</option>
+                                <option value="table">{{ $t('Table') }}</option>
                             </select>
                         </div>
                     </div>
                     <div class="col-md-auto">
                         <div class="input-group w-auto">
-                            <span class="input-group-text">Sort by</span>
+                            <span class="input-group-text">{{ $t('Sort_by') }}</span>
                             <select class="form-select">
-                                <option @click="fetchAllCryptocurrenciesData()">Default sorting</option>
-                                <option @click="displayedCryptocurrencies.sort((a, b) => a.price - b.price)">Price: low to high</option>
-                                <option @click="displayedCryptocurrencies.sort((a, b) => b.price - a.price)">Price: high to low</option>
+                                <option @click="fetchAllCryptocurrenciesData()">{{ $t('Default_sorting') }}</option>
+                                <option @click="displayedCryptocurrencies.sort((a, b) => a.price - b.price)">{{ $t('Price') }}: {{ $t('low_to_high') }}</option>
+                                <option @click="displayedCryptocurrencies.sort((a, b) => b.price - a.price)">{{ $t('Price') }}: {{ $t('high_to_low') }}</option>
                             </select>
                         </div>
                     </div>
                     <div class="col-md-auto">
-                        <b-button v-b-modal.cartModal>Cart</b-button>
+                        <b-button v-b-modal.cartModal>{{ $t('Cart') }}</b-button>
                     </div>
                 </div>
             </div>
@@ -50,7 +50,7 @@
                     <b-row align-v="center" style="margin: 10px 0px 10px 0px">
                         <div class="w-25">
                             <b-col class="d-flex justify-content-center">
-                                Price: {{ cryptocurrency.price | toCurrency }}
+                                {{ $t('Price') }}: {{ cryptocurrency.price | toCurrency }}
                             </b-col>
                         </div>
                         <div class="w-75">
@@ -58,7 +58,7 @@
                                 <div class="input-group">
                                     <input v-model="qty[cryptocurrency.id]" class="form-control" type="number" min="0"
                                         style="width: 100px" />
-                                    <button @click="addToCart(cryptocurrency)" class="btn btn-primary">Add to cart</button>
+                                    <button @click="addToCart(cryptocurrency)" class="btn btn-primary">{{ $t('Add_to_cart') }}</button>
                                 </div>
                             </b-col>
                         </div>
@@ -71,10 +71,10 @@
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <td>Name</td>
-                        <td>Price</td>
-                        <td>Price timestamp</td>
-                        <td>Description</td>
+                        <td>{{ $t('Name') }}</td>
+                        <td>{{ $t('Price') }}</td>
+                        <td>{{ $t('Price_timestamp') }}</td>
+                        <td>{{ $t('Description') }}</td>
                     </tr>
                 </thead>
                 <tbody>
@@ -91,7 +91,7 @@
                         <div class="input-group">
                             <input v-model="qty[c.id]" class="form-control" type="number" min="0" style="width: 100px" />
                             <button @click="addToCart(c)" class="btn btn-primary">
-                                Add to cart
+                                {{ $t('Add_to_cart') }}
                             </button>
                         </div>
                     </tr>

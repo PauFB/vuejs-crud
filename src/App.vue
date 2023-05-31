@@ -1,6 +1,7 @@
 <template>
     <div class="container-fluid">
         <div id="page">
+            <SelectLocale />
             <transition name="fade">
                 <router-view></router-view>
             </transition>
@@ -21,7 +22,12 @@
 </style>
 
 <script>
+import SelectLocale from './assets/js/components/SelectLocale.vue'
+
 export default {
+    components: {
+        SelectLocale
+    },
     data() {
         return {
 

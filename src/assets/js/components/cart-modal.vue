@@ -1,15 +1,15 @@
 <template>
     <b-modal id="cartModal" title="Cart" @shown="onModalShown()">
         <div v-if="cartCryptocurrencies.length === 0">
-            <p class="text-center">Cart is empty</p>
+            <p class="text-center">{{ $t('Cart_is_empty') }}</p>
         </div>
         <div v-if="cartCryptocurrencies.length > 0">
             <table class="table table-cart">
                 <thead>
                     <tr>
-                        <td>Name</td>
-                        <td>Quantity</td>
-                        <td>Price per unit</td>
+                        <td>{{ $t('Name') }}</td>
+                        <td>{{ $t('Quantity') }}</td>
+                        <td>{{ $t('Price_per_unit') }}</td>
                         <td></td>
                     </tr>
                 </thead>
@@ -36,17 +36,17 @@
                     <div id="paypal-button-container"></div>
                 </b-col>
                 <b-col class="text-center">
-                    Cart total: {{ totalAmountToPay | toCurrency }}
+                    {{ $t('Cart_total') }}: {{ totalAmountToPay | toCurrency }}
                 </b-col>
             </b-row>
         </div>
         <div v-if="purchaseSuccessfulBody" class="alert alert-success" role="alert">
-            <h5 class="alert-heading text-center">Purchase summary</h5>
+            <h5 class="alert-heading text-center">{{ $t('Purchase_summary') }}</h5>
             <table class="table table-cart">
                 <thead>
-                    <td>Name</td>
-                    <td>Quantity</td>
-                    <td>Price per unit</td>
+                    <td>{{ $t('Name') }}</td>
+                    <td>{{ $t('Quantity') }}</td>
+                    <td>{{ $t('Price_per_unit') }}</td>
                 </thead>
                 <tbody>
                     <tr v-for="c in purchaseSuccessfulBody">

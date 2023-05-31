@@ -11,6 +11,8 @@ Vue.use(VueRouter)
 import VueResource from 'vue-resource';
 Vue.use(VueResource);
 
+import i18n from './i18n';
+
 import App from './App.vue'
 
 const AllCryptocurrencies = require('./assets/js/components/all-cryptocurrencies.vue');
@@ -29,4 +31,4 @@ const routes = [
     }
 ];
 var router = new VueRouter({ routes: routes, mode: 'history' });
-new Vue(Vue.util.extend({ router }, App)).$mount('#app');
+new Vue(Vue.util.extend({ router, i18n }, App)).$mount('#app');
